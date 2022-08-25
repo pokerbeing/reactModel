@@ -4,12 +4,9 @@ import "./styles.css";
 const Child = props => (
     <div id="myModal" className="modal">
         <div className="modal-content">
-            <span className="close">&times;</span>
+            <span className="close" onClick={props.hideToggle}>&times;</span>
             <p>Enter TODO below:</p>
-            <input type="text" id="prompt" size="80"></input>
-            <button onClick={props.hideToggle}>
-              Close
-            </button>
+            {<InputForm />}
         </div>
     </div> 
 )
@@ -36,8 +33,38 @@ export default class Modal extends React.Component {
             <button onClick={() => this.toggleHidden()} >
               Click to show modal
             </button>
-            {!this.state.isHidden && <Child hideToggle={() => this.toggleHidden()} />}
+            {!this.state.isHidden && <Child hideToggle={() => this.toggleHidden()} /> }
             </div>
         );
     }   
+}
+
+class InputForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+         <input type="text" size="80" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
 }
